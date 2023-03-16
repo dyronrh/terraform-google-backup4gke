@@ -55,3 +55,9 @@ variable "cluster_resource_labels" {
    # "cmdb" = "backup-",
   }
 }
+
+variable "full" {
+  description = "(Optional) Configures full backup."
+  type        = any
+  default     = null
+}
