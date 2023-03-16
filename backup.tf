@@ -3,15 +3,15 @@ resource "google_gke_backup_backup_plan" "full" {
     
     lifecycle {
         precondition {
-        condition     = google_container_cluster.primary.region ==  var.region
+        condition     = vaar.region ==  var.region_bck
         error_message = "Change the value of region, becouse backup regios mus be diferent that the cluster region."
         }
     }
 
-    name     = lookup(var.full, "name", null)
+    name     = var.name
     cluster  = var.cluster_id
-    location = lookup(var.full, "region", null) 
-    labels   = ookup(var.full, "cluster_resource_labels", null)   
+    location = var.region_bck
+    labels   = var.cluster_resource_labels  
 
     dynamic "backup_config" {
       for_each = lookup(var.full, "backup_config", [])
