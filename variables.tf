@@ -4,6 +4,12 @@ variable "project_id" {
     default     = ""
 }
 
+variable "cluster_id" {
+    type        = string
+    description = "define the cluster_id of  gcp  project"
+    default     = null
+}
+
 variable "name" {
     type        = string
     description = "define the name of  gcp backup object"
