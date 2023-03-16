@@ -31,7 +31,7 @@ resource "google_gke_backup_backup_plan" "full" {
    backup_schedule  {
         
             cron_schedule = var.full.backup_schedule.cron_schedule == null ? null : var.full.backup_schedule.cron_schedule
-            paused        = var.full.backup_schedule.paused == null ? :  var.full.backup_schedule.paused
+            paused        = var.full.backup_schedule.paused == null ? null :  var.full.backup_schedule.paused
 
     }
   }
