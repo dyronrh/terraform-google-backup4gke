@@ -29,7 +29,7 @@ resource "google_gke_backup_backup_plan" "full" {
     }
     
    dynamic "backup_schedule"  {
-            for_each = var.full.backup_schedule != null ? var.full[2] : []
+            for_each = can(var.full["backup_schedule"])  ? var.full : []
        content {
             cron_schedule = var.full.backup_schedule.cron_schedule == null ? null : var.full.backup_schedule.cron_schedule
             paused        = var.full.backup_schedule.paused == null ? null :  var.full.backup_schedule.paused
