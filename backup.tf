@@ -28,10 +28,11 @@ resource "google_gke_backup_backup_plan" "full" {
       
     }
     
-   backup_schedule  {
-            
+   dynamic "backup_schedule"  {
+            for_each = var.full.backup_schedule != null ? [1] : []
+       content {
             cron_schedule = var.full.backup_schedule.cron_schedule == null ? null : var.full.backup_schedule.cron_schedule
             paused        = var.full.backup_schedule.paused == null ? null :  var.full.backup_schedule.paused
-
+       }
     }
   }
