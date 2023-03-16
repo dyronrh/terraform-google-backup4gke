@@ -21,11 +21,12 @@ resource "google_gke_backup_backup_plan" "full" {
     }
 
 
-   retention_policy  {
-     
-            backup_delete_lock_days = var.full.retention_policy.backup_delete_lock_days == null ? null : var.full.retention_policy.backup_delete_lock_days 
-            backup_retain_days      = var.full.retention_policy.backup_retain_days == null ? null : var.full.retention_policy.backup_retain_days
-      
+   dynamic "retention_policy"  {
+      for_each =   can(var.full["retention_policy"])  ? ["true"] : [] 
+        content {
+            backup_delete_lock_days =  lookup(var.full.retention_policy, "backup_delete_lock_days", null)
+            backup_retain_days      = lookup(var.full.retention_policy, "backup_retain_days", null) 
+        }
     }
     
    dynamic "backup_schedule"  {
