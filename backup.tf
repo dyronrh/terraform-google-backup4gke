@@ -14,7 +14,7 @@ resource "google_gke_backup_backup_plan" "full" {
     labels   = var.cluster_resource_labels  
 
     dynamic "backup_config" {
-      for_each = lookup(var.full, "backup_config", [])
+      for_each = var.full
         content {
             include_volume_data   = lookup(var.full.backup_config, "include_volume_data", null)
             include_secrets   = lookup(var.full.backup_config, "include_secrets", null)
@@ -24,7 +24,7 @@ resource "google_gke_backup_backup_plan" "full" {
 
 
     dynamic "retention_policy" {
-      for_each = lookup(var.full, "retention_policy", [])
+      for_each = var.full
         content {
             backup_delete_lock_days = lookup(var.full.retention_policy, "backup_delete_lock_days", null)
             backup_retain_days      = lookup(var.full.retention_policy, "backup_retain_days", null)
@@ -32,7 +32,7 @@ resource "google_gke_backup_backup_plan" "full" {
     }
     
     dynamic "backup_schedule" {
-      for_each = lookup(var.full, "backup_schedule", [])
+      for_each = var.full
         content {
             cron_schedule = lookup(var.full.backup_schedule, "cron_schedule", null)
             paused        = lookup(var.full.backup_schedule, "paused", null)
