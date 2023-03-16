@@ -8,7 +8,6 @@ variable "name" {
     type        = string
     description = "define the name of  gcp backup object"
     default     = null
-    required = true
 }
 
 variable "region" {
@@ -45,7 +44,7 @@ variable "sub_network" {
 
 
 variable "cluster_resource_labels" {
-  type = "map"
+  type = map
   default = {
    # "cmdb" = "backup-",
   }
