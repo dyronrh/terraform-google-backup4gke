@@ -13,11 +13,13 @@ resource "google_gke_backup_backup_plan" "full" {
     location = var.region_bck
     labels   = var.cluster_resource_labels  
 
-    backup_config {
+    dynamic "backup_config" {
+        for_each =  can(var.full["backup_config"]) ? ["true"] : []
+        content {
             include_volume_data   = var.full.backup_config.include_volume_data == null ? null : var.full.backup_config.include_volume_data 
             include_secrets   = var.full.backup_config.include_secrets == null ? null : var.full.backup_config.include_secrets
             all_namespaces = var.full.backup_config.all_namespaces == null ? null :  var.full.backup_config.all_namespaces
-        
+        }
     }
 
 
