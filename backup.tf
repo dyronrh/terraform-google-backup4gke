@@ -14,24 +14,24 @@ resource "google_gke_backup_backup_plan" "full" {
     labels   = var.cluster_resource_labels  
 
     backup_config {
-            include_volume_data   = var.full.backup_config.include_volume_data
-            include_secrets   = var.full.backup_config.include_secrets  
-            all_namespaces = var.full.backup_config.all_namespaces 
+            include_volume_data   = var.full.backup_config.include_volume_data == null ? null : var.full.backup_config.include_volume_data 
+            include_secrets   = var.full.backup_config.include_secrets == null ? null : var.full.backup_config.include_secrets
+            all_namespaces = var.full.backup_config.all_namespaces == null ? null :  var.full.backup_config.all_namespaces
         
     }
 
 
    retention_policy  {
      
-            backup_delete_lock_days = var.full.retention_policy.backup_delete_lock_days
-            backup_retain_days      = var.full.retention_policy.backup_retain_days
+            backup_delete_lock_days = var.full.retention_policy.backup_delete_lock_days == null ? null : var.full.retention_policy.backup_delete_lock_days 
+            backup_retain_days      = var.full.retention_policy.backup_retain_days == null ? null : var.full.retention_policy.backup_retain_days
       
     }
     
    backup_schedule  {
         
-            cron_schedule = var.full.backup_schedule.cron_schedule
-            paused        = var.full.backup_schedule.paused
+            cron_schedule = var.full.backup_schedule.cron_schedule == null ? null : var.full.backup_schedule.cron_schedule
+            paused        = var.full.backup_schedule.paused == null ? :  var.full.backup_schedule.paused
 
     }
   }
