@@ -1,5 +1,5 @@
 # Create full GKE backup Plan
-resource "google_gke_backup_backup_plan" "full" {
+resource "google_gke_backup_backup_plan" "backup_for_gke" {
     count = can(var.full) && length(var.full) > 0  ?  length(var.full) : 0
     
     lifecycle {

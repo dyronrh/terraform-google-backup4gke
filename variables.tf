@@ -16,6 +16,26 @@ variable "name" {
     default     = null
 }
 
+variable "include_volume_data" {
+    type        = bool
+    description = "define the volume data of  gcp cluster in bakups for gke object"
+    default     = null
+}
+
+variable "include_secrets" {
+    type        = bool
+    description = "define the clusters data of  gcp cluster in bakups for gke object"
+    default     = null
+}
+
+
+variable "description" {
+    type        = string
+    description = "define the description of  gcp backup object"
+    default     = null
+}
+
+ 
 variable "region" {
     type        = string
     description = "define project region"
@@ -55,6 +75,8 @@ variable "cluster_resource_labels" {
    # "cmdb" = "backup-",
   }
 }
+
+
 
 variable "full" {
   description = "(Optional) Configures full backup."
