@@ -4,7 +4,7 @@ resource "google_gke_backup_backup_plan" "full" {
     
     lifecycle {
         precondition {
-        condition     = var.region !=  var.region_bck
+        condition     = var.full[count.index].region !=  var.full[count.index].region_bck
         error_message = "Change the value of region, becouse backup regios mus be diferent that the cluster region."
         }
     }
