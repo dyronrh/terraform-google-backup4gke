@@ -12,7 +12,7 @@ resource "google_gke_backup_backup_plan" "full" {
     name     = var.full[count.index].name
     cluster  = var.full[count.index].cluster_id
     location = var.full[count.index].region_bck
-    labels   = var.full[count.index].cluster_resource_labels  
+    labels   = lookup(var.full[count.index],"cluster_resource_labels",null  )
 
     dynamic "backup_config"  {
       for_each =   can(var.full[count.index]["backup_config"])  ? ["true"] : [] 
