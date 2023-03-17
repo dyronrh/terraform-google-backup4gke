@@ -1,5 +1,6 @@
 # Create full GKE backup Plan
 resource "google_gke_backup_backup_plan" "full" {
+    count = can(var.full) && length(var.full) > 0  ?  length(var.full) : 0
     
     lifecycle {
         precondition {
@@ -8,34 +9,35 @@ resource "google_gke_backup_backup_plan" "full" {
         }
     }
 
-    name     = var.name
-    cluster  = var.cluster_id
-    location = var.region_bck
-    labels   = var.cluster_resource_labels  
+    name     = var.full[count.index].name
+    cluster  = var.full[count.index].cluster_id
+    location = var.full[count.index].region_bck
+    labels   = var.full[count.index].cluster_resource_labels  
 
-    dynamic "backup_config" {
-        for_each =  can(var.full["backup_config"]) ? ["true"] : []
+    dynamic "backup_config"  {
+      for_each =   can(var.full[count.index]["backup_config"])  ? ["true"] : [] 
         content {
-            include_volume_data   = var.full.backup_config.include_volume_data == null ? null : var.full.backup_config.include_volume_data 
-            include_secrets   = var.full.backup_config.include_secrets == null ? null : var.full.backup_config.include_secrets
-            all_namespaces = var.full.backup_config.all_namespaces == null ? null :  var.full.backup_config.all_namespaces
+            include_volume_data  =  lookup(var.full[count.index].backup_config, "include_volume_data", null)
+            include_secrets      =  lookup(var.full[count.index].backup_config, "include_secrets", null) 
+            all_namespaces       =  lookup(var.full[count.index].backup_config, "all_namespaces", null) 
         }
     }
 
 
    dynamic "retention_policy"  {
-      for_each =   can(var.full["retention_policy"])  ? ["true"] : [] 
+      for_each =   can(var.full[count.index]["retention_policy"])  ? ["true"] : [] 
         content {
-            backup_delete_lock_days =  lookup(var.full.retention_policy, "backup_delete_lock_days", null)
-            backup_retain_days      = lookup(var.full.retention_policy, "backup_retain_days", null) 
+            backup_delete_lock_days =  lookup(var.full[count.index].retention_policy, "backup_delete_lock_days", null)
+            backup_retain_days      =  lookup(var.full[count.index].retention_policy, "backup_retain_days", null) 
         }
     }
-    
+
+ 
    dynamic "backup_schedule"  {
-            for_each = can(var.full["backup_schedule"])  ? ["true"] : [] 
-       content {
-            cron_schedule = var.full.backup_schedule.cron_schedule == null ? null : var.full.backup_schedule.cron_schedule
-            paused        = var.full.backup_schedule.paused == null ? null :  var.full.backup_schedule.paused
-       }
+      for_each =   can(var.full[count.index]["backup_schedule"])  ? ["true"] : [] 
+        content {
+            cron_schedule =  lookup(var.full[count.index].backup_schedule, "cron_schedule", null)
+            paused        =  lookup(var.full[count.index].backup_schedule, "paused", null) 
+        }
     }
-  }
+}
